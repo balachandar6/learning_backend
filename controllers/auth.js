@@ -33,11 +33,7 @@ function login(req, res) {
             }
 
         } else {
-            if (response.length) {
-                res.status(401).send({ error: 'Unauthorized', message: 'Authentication failed' });
-            } else {
-                res.send(err);
-            }
+            res.status(401).send({ error: 'Unauthorized', message: 'Authentication failed' });
         }
     });
 
@@ -52,7 +48,7 @@ function login(req, res) {
 function register(req, res) {
 
     db_read.query('SELECT email FROM users where email = ?', [req.body.email], (err, response, fields) => {
-        if (!err && response.length === 0) {
+        if (!err && (response || []).length === 0) {
             const user = response[0];
             const passwordInput = Hash(req.body.password, config.appSecret).toString();
             const email = req.body.email;
@@ -67,7 +63,11 @@ function register(req, res) {
                 }
             });
         } else {
-            res.status(400).send({ error: 'Already_Exist', message: 'This email ID already exists. Try using a different one' });
+            if ((response || []).length) {
+                res.status(400).send({ error: 'Already_Exist', message: 'This email ID already exists. Try using a different one' });
+            } else {
+                res.send(err);
+            }
         }
     });
 
