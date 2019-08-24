@@ -33,7 +33,11 @@ function login(req, res) {
             }
 
         } else {
-            res.status(401).send({ error: 'Unauthorized', message: 'Authentication failed' });
+            if (response.length) {
+                res.status(401).send({ error: 'Unauthorized', message: 'Authentication failed' });
+            } else {
+                res.send(err);
+            }
         }
     });
 
