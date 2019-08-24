@@ -14,7 +14,7 @@ config = {
     appSecret: process.env.APP_SECRET || "itsverysecret",
 
     // Server port
-    port: process.env.SERVER_PORT || 3000,
+    port: process.env.PORT || 3000,
     
     // JWT secret
     jwtSecret: process.env.JWT_SECRET || "itsverysecret",
