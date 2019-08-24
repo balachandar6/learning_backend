@@ -1,10 +1,12 @@
 const express = require('express');
 const praviteRouter = require('./private');
-const publicRouter = require('./public');
+const loginRouter = require('./login');
+const registerRouter = require('./register');
 
 const router = express.Router();
 
 router.use('/', praviteRouter);
-router.use('/', publicRouter);
+router.use('/', loginRouter);
+router.use('/', registerRouter);
 
 module.exports = router;

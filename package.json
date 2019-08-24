@@ -6,7 +6,7 @@
   "scripts": {
     "set-local": "cp .env.local .env",
     "set-prod": "cp .env.production .env",
-    "local": "yarn set-local && node server.js",
+    "local-start": "yarn set-local && node server.js",
     "start": "yarn set-prod && node server.js",
     "server": "yarn set-prod && nodemon server.js",    
     "dev": "nodemon server.js",

@@ -52,7 +52,7 @@ DEBUG=true
 # app password secret
 APP_SECRET=itsverysecret
 # server port
-SERVER_PORT=3000
+PORT=3000
 # jwt secret
 JWT_SECRET=itsverysecret
 # jwt expire time in seconds
