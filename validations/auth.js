@@ -7,4 +7,11 @@ const loginParam = {
     }
 }
 
-module.exports = { loginParam };
+const tutorParam = {
+    body: {
+        email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+        mobileNumber: Joi.string().required()
+    }
+}
+
+module.exports = { loginParam, tutorParam };
