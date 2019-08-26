@@ -6,6 +6,7 @@ const tutorRouter = require('./register/tutorRoute');
 const institueRouter = require('./register/institueRoute');
 const trainerRouter = require('./register/trainerRoute');
 const learnerRoute = require('./register/learnerRoute');
+const learnerDetailRoute = require('./register/learnerDetailRoute');
 const router = express.Router();
 
 router.use('/', privatRouter);
@@ -15,4 +16,5 @@ router.use('/', tutorRouter);
 router.use('/', institueRouter);
 router.use('/', trainerRouter);
 router.use('/', learnerRoute);
+router.use('/', learnerDetailRoute);
 module.exports = router;

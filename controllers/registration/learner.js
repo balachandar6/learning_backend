@@ -18,7 +18,6 @@ function registerLeaner(req, res) {
                     if (err) {
                         res.status(401).send({ error: 'Faild', ...err });
                     } else {
-                        console.log(response);
                         res.status(200).send({
                             status: 'Created',
                             learnerCode: response.insertId
