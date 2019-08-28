@@ -25,7 +25,7 @@ function registerInstitute(req, res) {
                     db_read.query('SELECT * from institutes', (err, response, fields) => {
                         if (!err) {
                             const INSERT_USER_QUERY = `INSERT INTO institutes(tutorCode, address, enquireDistance, mode, instituteName, mobileNumber)
-                            VALUES(${tutorCode}, '${address}', ${enquireDistance}, '${modeValue}', '${instituteNameValue}', '${mobileNumberValue}')`;
+                            VALUES('${tutorCode}', '${address}', ${enquireDistance}, '${modeValue}', '${instituteNameValue}', '${mobileNumberValue}')`;
                             db_write.query(INSERT_USER_QUERY, (err, response, fields) => {
                                 if (err) {
                                     res.status(401).send({ error: 'Faild', ...err });
@@ -39,7 +39,7 @@ function registerInstitute(req, res) {
                         else {
                             if (err.code === "ER_NO_SUCH_TABLE") {
                                 const CREATE_TABLE = `CREATE TABLE institutes (
-                                tutorCode INT PRIMARY KEY,
+                                tutorCode VARCHAR(50) PRIMARY KEY,
                                 address VARCHAR(50) NULL,
                                 enquireDistance INT NULL,
                                 mode VARCHAR(50) NOT NULL,

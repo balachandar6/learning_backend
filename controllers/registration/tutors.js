@@ -14,14 +14,22 @@ function registerTutor(req, res) {
         db_read.query('SELECT tutorCode FROM tutors where mobileNumber = ?', [mobileNumber], (err, response, fields) => {
             if (!err && (response || []).length === 0) {
                 const isInstituteValue = isInstitute ? 1 : 0;
-                const INSERT_USER_QUERY = `INSERT INTO tutors(name, email, countryCode, mobileNumber, gender, courses, location, isInstitute, instituteName)
-                VALUES('${name}', '${email}', '${countryCode}', '${mobileNumber}', '${gender}', '${courseValue}', '${location}', '${isInstituteValue}', '${instituteName}')`;
-                db_write.query(INSERT_USER_QUERY, (err, response, fields) => {
+                const INSERT_DUMMY_VALUE = `INSERT INTO tutors_proxy(dummyValue) VALUES('testing')`;
+                db_write.query(INSERT_DUMMY_VALUE, (err, response, fields) => {
                     if (err) {
                         res.status(401).send({ error: 'Faild', ...err });
                     } else {
-                        res.status(200).send({
-                            status: 'Created'
+                        const ID_VALUE = "tutor" + response.insertId;
+                        const INSERT_USER_QUERY = `INSERT INTO tutors(tutorCode, name, email, countryCode, mobileNumber, gender, courses, location, isInstitute, instituteName)
+                VALUES('${ID_VALUE}', '${name}', '${email}', '${countryCode}', '${mobileNumber}', '${gender}', '${courseValue}', '${location}', '${isInstituteValue}', '${instituteName}')`;
+                        db_write.query(INSERT_USER_QUERY, (err1, response1, fields) => {
+                            if (err1) {
+                                res.status(401).send({ error: 'Faild', ...err });
+                            } else {
+                                res.status(200).send({
+                                    status: 'Created'
+                                });
+                            }
                         });
                     }
                 });
@@ -31,7 +39,7 @@ function registerTutor(req, res) {
                 } else {
                     if (err.code === "ER_NO_SUCH_TABLE") {
                         const CREATE_TABLE = `CREATE TABLE tutors (
-                            tutorCode INT AUTO_INCREMENT PRIMARY KEY,
+                            tutorCode VARCHAR(50) NOT NULL PRIMARY KEY,
                             name VARCHAR(50) NOT NULL,
                             email VARCHAR(50) NOT NULL,
                             countryCode VARCHAR(50) NULL,
@@ -42,11 +50,20 @@ function registerTutor(req, res) {
                             isInstitute BOOLEAN,
                             instituteName VARCHAR(50) NULL
                         )`;
-                        db_write.query(CREATE_TABLE, (error, response, fields) => {
+                        const CREATE_TABLE_DUMMY = `CREATE TABLE tutors_proxy (
+                            tutorCode INT AUTO_INCREMENT PRIMARY KEY,
+                            dummyValue VARCHAR(50) NOT NULL)`;
+                        db_write.query(CREATE_TABLE_DUMMY, (error, response, fields) => {
                             if (error) {
-                                res.send(err);
+                                res.send(error);
                             } else {
-                                registerTutor(req, res);
+                                db_write.query(CREATE_TABLE, (error1, response1, fields) => {
+                                    if (error1) {
+                                        res.send(error1);
+                                    } else {
+                                        registerTutor(req, res);
+                                    }
+                                });
                             }
                         });
                     } else {

@@ -24,7 +24,7 @@ function registerTrainer(req, res) {
                     db_read.query('SELECT * from trainers', (err, response, fields) => {
                         if (!err) {
                             const INSERT_USER_QUERY = `INSERT INTO trainers(tutorCode, speak, degree, mode, enquireDistance, experience, mobileNumber)
-                            VALUES(${tutorCode}, '${speak}', '${degree}', '${modeValue}', ${enquireDistance}, '${experience}', '${mobileNumberValue}')`;
+                            VALUES('${tutorCode}', '${speak}', '${degree}', '${modeValue}', ${enquireDistance}, '${experience}', '${mobileNumberValue}')`;
                             db_write.query(INSERT_USER_QUERY, (err, response, fields) => {
                                 if (err) {
                                     res.status(401).send({ error: 'Faild', ...err });
@@ -38,7 +38,7 @@ function registerTrainer(req, res) {
                         else {
                             if (err.code === "ER_NO_SUCH_TABLE") {
                                 const CREATE_TABLE = `CREATE TABLE trainers (
-                                tutorCode INT PRIMARY KEY,
+                                tutorCode VARCHAR(50) PRIMARY KEY,
                                 speak VARCHAR(50) NOT NULL,
                                 degree VARCHAR(50) NULL,
                                 mode VARCHAR(50) NOT NULL,
