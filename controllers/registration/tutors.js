@@ -19,7 +19,7 @@ function registerTutor(req, res) {
                     if (err) {
                         res.status(401).send({ error: 'Faild', ...err });
                     } else {
-                        const ID_VALUE = "tutor" + response.insertId;
+                        const ID_VALUE = "TUTOR_" + response.insertId;
                         const INSERT_USER_QUERY = `INSERT INTO tutors(tutorCode, name, email, countryCode, mobileNumber, gender, courses, location, isInstitute, instituteName)
                 VALUES('${ID_VALUE}', '${name}', '${email}', '${countryCode}', '${mobileNumber}', '${gender}', '${courseValue}', '${location}', '${isInstituteValue}', '${instituteName}')`;
                         db_write.query(INSERT_USER_QUERY, (err1, response1, fields) => {
